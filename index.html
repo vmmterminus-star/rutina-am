@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mañana">
+<meta name="application-name" content="Mañana">
+<meta name="theme-color" content="#F7F2EC">
+<title>Rutina de la mañana</title>
+<link rel="apple-touch-icon" sizes="512x512" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F2EC; --card:#FFFFFF; --line:#E8E0D6;
+  --terra:#B5623C; --terra-soft:#F7E4DA;
+  --sage:#6E8F76; --sage-soft:#E6EFE7;
+  --lila:#EAE4F1; --lila-ink:#6B5B7B;
+  --mostaza-soft:#F0E8D0; --mostaza-ink:#8F7328;
+  --ink:#3A3530; --muted:#A69B8E; --tenue:#C6BAAE;
+  --malva1:#8A7A8F; --malva2:#A899A5;
+  --r:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:'Josefin Sans',system-ui,sans-serif;
+  font-weight:400; font-size:17px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(48px + env(safe-area-inset-bottom));
+}
+button{font-family:inherit;color:inherit;border:none;background:none;cursor:pointer;font-size:inherit;}
+input{font-family:inherit;}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px;}
+
+/* ---------- HEADER ---------- */
+.header{background:linear-gradient(135deg,var(--malva1),var(--malva2));color:#fff;
+  padding:calc(22px + env(safe-area-inset-top)) 20px 22px;border-radius:0 0 22px 22px;}
+.header-in{max-width:560px;margin:0 auto;}
+.header h1{margin:0;font-size:27px;font-weight:600;letter-spacing:.2px;}
+.header .sub{margin-top:2px;font-size:15px;font-weight:300;opacity:.9;
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+.header .reloj{font-size:19px;font-weight:500;opacity:1;font-variant-numeric:tabular-nums;letter-spacing:.5px;}
+.estado{display:inline-block;margin-top:12px;padding:5px 14px 4px;border-radius:999px;
+  background:rgba(255,255,255,.22);font-size:14px;font-weight:500;letter-spacing:.3px;}
+
+/* ---------- PASTILLAS DE RUTINA ---------- */
+.rutinas{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:16px 16px 2px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.rutinas::-webkit-scrollbar{display:none;}
+.rutinas button{white-space:nowrap;padding:10px 17px 7px;border-radius:999px;background:#fff;
+  border:1px solid var(--line);color:#7C7168;font-size:15px;}
+.rutinas button.on{background:var(--terra);border-color:var(--terra);color:#fff;font-weight:600;}
+.rutinas button.mas{border-style:dashed;color:var(--terra);font-weight:600;padding:10px 15px 7px;}
+
+/* ---------- CARDS ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-top:16px;}
+.eyebrow{display:inline-block;padding:5px 13px 4px;border-radius:999px;background:var(--terra-soft);
+  color:var(--terra);font-size:13px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;}
+.eyebrow.neutro{background:#EFE9E1;color:#7C7168;}
+.aviso{display:flex;align-items:center;gap:12px;background:var(--mostaza-soft);
+  border-left:5px solid var(--mostaza-ink);border-radius:12px;padding:14px 16px;margin-top:16px;
+  font-size:15px;font-weight:400;line-height:1.35;color:#6B571E;}
+
+/* ---------- EMPEZAR ---------- */
+.empezar{display:block;width:100%;margin-top:22px;background:var(--terra);color:#fff;
+  border-radius:22px;padding:26px 0 22px;font-size:24px;font-weight:600;letter-spacing:3px;
+  box-shadow:0 6px 18px rgba(181,98,60,.24);transition:transform .12s ease;}
+.empezar:active{transform:scale(.975);}
+.preview{text-align:center;margin-top:14px;font-size:16px;font-weight:300;color:var(--muted);}
+.preview b{font-weight:600;color:var(--ink);}
+
+/* ---------- AHORA ---------- */
+.ahora-nombre{margin:14px 0 0;font-size:31px;font-weight:600;line-height:1.15;}
+.rango{margin-top:7px;font-size:16px;font-weight:300;color:var(--muted);}
+.rango b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;}
+.rango .flecha{opacity:.5;padding:0 3px;}
+.rango.over b.fin{color:var(--terra);}
+.barra{height:9px;border-radius:99px;background:#EFE9E1;margin-top:18px;overflow:hidden;}
+.barra span{display:block;height:100%;border-radius:99px;background:var(--sage);transition:width .9s linear;}
+.barra.over span{background:var(--terra);}
+.crono{margin-top:9px;font-size:16px;font-weight:300;color:var(--muted);}
+.crono b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;}
+.btn-listo{display:block;width:100%;margin-top:18px;background:var(--terra);color:#fff;
+  border-radius:16px;padding:20px 0 16px;font-size:20px;font-weight:600;letter-spacing:2.5px;
+  transition:transform .12s ease;}
+.btn-listo:active{transform:scale(.97);}
+.sub-acciones{display:flex;gap:10px;margin-top:10px;}
+.sub-acciones button{flex:1;border:1px solid var(--line);border-radius:14px;padding:14px 0 11px;
+  font-size:15px;font-weight:400;color:#7C7168;}
+.sub-acciones button:active{background:#F7F2EC;}
+.sub-acciones button.recalc{color:var(--mostaza-ink);border-color:var(--mostaza-soft);background:var(--mostaza-soft);}
+
+/* ---------- ETA ---------- */
+.eta{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px auto 0;
+  padding:12px 20px 10px;border-radius:999px;background:var(--sage-soft);color:#4F6B57;
+  font-size:17px;font-weight:500;width:fit-content;max-width:100%;text-align:center;}
+.eta.tarde{background:var(--terra-soft);color:var(--terra);}
+.eta .delta{font-weight:600;font-variant-numeric:tabular-nums;}
+.eta .sep{opacity:.4;}
+.colchon{text-align:center;margin-top:10px;font-size:15px;font-weight:300;color:var(--muted);}
+.colchon b{font-weight:600;}
+.colchon.ok b{color:var(--sage);}
+.colchon.mal b{color:var(--terra);}
+
+/* ---------- LISTA ---------- */
+.lista-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.total{font-size:15px;font-weight:300;color:var(--muted);}
+.btn-orden{border:1px solid var(--line);border-radius:999px;padding:8px 14px 6px;font-size:14px;color:#7C7168;}
+.btn-orden.on{background:var(--terra);border-color:var(--terra);color:#fff;font-weight:600;}
+.hr{height:1px;background:var(--line);margin:14px 0 4px;}
+.paso{display:flex;align-items:center;gap:13px;padding:11px 10px;margin:0 -10px;border-radius:12px;}
+.paso + .paso{border-top:1px solid #F2ECE4;}
+.marca{flex:0 0 23px;height:23px;border-radius:7px;border:1.5px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;}
+.paso.hecho .marca{background:var(--sage);border-color:var(--sage);}
+.hplan{flex:0 0 46px;font-size:14px;font-weight:300;color:var(--tenue);
+  font-variant-numeric:tabular-nums;letter-spacing:.3px;}
+.paso .nombre{flex:1;font-size:16px;font-weight:400;line-height:1.25;}
+.paso .dato{font-size:15px;font-weight:300;color:var(--muted);font-variant-numeric:tabular-nums;}
+.paso.hecho{cursor:pointer;}
+.paso.hecho .nombre{text-decoration:line-through;color:var(--muted);font-weight:300;}
+.paso.saltado .nombre{text-decoration:line-through;color:var(--tenue);}
+.paso.activo{background:var(--sage-soft);border-top-color:transparent!important;margin:4px -10px;}
+.paso.activo .nombre{font-weight:600;}
+.paso.activo .hplan{color:#7C9885;font-weight:400;}
+.paso.activo .marca{background:var(--sage);border-color:var(--sage);border-radius:99px;}
+.paso.activo .dato{color:#4F6B57;font-weight:500;}
+.paso.pend .dato{color:var(--tenue);}
+.paso.fija{background:#FBF6F2;border:1px solid var(--terra-soft);margin:4px -10px;border-top-color:var(--terra-soft)!important;}
+.paso.fija .hplan{color:var(--terra);font-weight:600;}
+.paso.fija .nombre{font-weight:500;}
+.paso.activo.fija{background:var(--sage-soft);border-color:var(--sage-soft);}
+.paso.activo.fija .hplan{color:#4F6B57;font-weight:600;}
+.paso .auto{font-size:12px;color:var(--sage);letter-spacing:.5px;padding-left:5px;}
+.nota-ancla{padding:2px 10px 10px;margin:0 -10px;font-size:14px;font-weight:300;color:var(--muted);}
+.nota-ancla b{font-weight:600;}
+.nota-ancla.ok b{color:var(--sage);}
+.nota-ancla.mal b{color:var(--terra);}
+.orden-btns{display:flex;gap:6px;align-items:center;}
+.orden-btns button{width:34px;height:31px;border-radius:9px;background:#F5F0E9;color:var(--terra);font-size:14px;line-height:1;}
+.orden-btns button:disabled{opacity:.3;}
+.orden-btns .ahora{width:auto;padding:0 11px;background:var(--sage-soft);color:#4F6B57;font-size:13px;font-weight:600;}
+.fila-traslado{display:flex;align-items:center;gap:13px;padding:11px 10px;margin:0 -10px;
+  border-top:1px dashed var(--line);}
+.fila-traslado .ico{flex:0 0 23px;text-align:center;color:var(--muted);font-size:15px;}
+.fila-traslado .nombre{flex:1;font-size:16px;font-weight:300;color:var(--muted);}
+.fila-traslado .dato{font-size:15px;font-weight:300;color:var(--muted);font-variant-numeric:tabular-nums;}
+.fila-llegas{display:flex;align-items:center;gap:13px;padding:11px 10px 2px;margin:0 -10px;
+  font-size:17px;font-weight:600;}
+.fila-llegas .ico{flex:0 0 23px;}
+.fila-llegas .nombre{flex:1;}
+.fila-llegas .h{font-variant-numeric:tabular-nums;}
+
+/* ---------- FINAL ---------- */
+.final-hora{font-size:34px;font-weight:600;margin:12px 0 0;letter-spacing:.5px;}
+.final-linea{font-size:17px;font-weight:300;color:#6F655C;margin-top:6px;}
+.final-linea b{font-weight:600;color:var(--ink);}
+.calif{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:16px;}
+.calif + .calif{border-top:1px solid #F2ECE4;}
+.calif .n{flex:1;font-weight:400;}
+.calif .plan{color:var(--tenue);font-weight:300;font-variant-numeric:tabular-nums;width:42px;text-align:right;}
+.calif .real{font-weight:600;font-variant-numeric:tabular-nums;width:56px;text-align:right;}
+.calif .real.mas{color:var(--terra);}
+.calif .real.menos{color:var(--sage);}
+.calif .real.nada{color:var(--tenue);font-weight:300;}
+
+/* ---------- PLEGABLES ---------- */
+.plegable-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.chev{color:var(--muted);font-size:15px;}
+
+/* ---------- AJUSTES ---------- */
+.aj-fila{display:flex;align-items:center;gap:12px;padding:9px 0;}
+.aj-fila + .aj-fila{border-top:1px solid #F2ECE4;}
+.aj-fila .n{flex:1;font-size:16px;font-weight:400;}
+.stepper{display:flex;align-items:center;gap:4px;}
+.stepper button{width:36px;height:36px;border-radius:11px;background:#F5F0E9;font-size:19px;font-weight:600;color:var(--terra);line-height:1;}
+.stepper button:active{background:var(--terra-soft);}
+.stepper .val{width:54px;text-align:center;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;}
+.stepper .val small{font-weight:300;color:var(--muted);font-size:13px;}
+.aj-hora{font-size:16px;font-weight:600;color:var(--ink);background:#F5F0E9;border:none;
+  border-radius:11px;padding:9px 12px;font-variant-numeric:tabular-nums;}
+.aj-nota{font-size:14px;font-weight:300;color:var(--muted);padding:2px 0 8px;line-height:1.35;}
+.aj-nombre{flex:1;font-size:16px;font-weight:600;color:var(--ink);background:#F5F0E9;border:none;
+  border-radius:11px;padding:12px 14px;min-width:0;}
+.aj-nombre:focus{outline:2px solid var(--terra-soft);}
+.aj-acciones{display:flex;gap:8px;padding:10px 0 2px;}
+.aj-acciones button{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px 0 9px;font-size:15px;color:#7C7168;}
+.aj-acciones button.peligro{color:var(--terra);border-color:var(--terra-soft);background:var(--terra-soft);}
+.aj-item{padding:11px 0;}
+.aj-item + .aj-item{border-top:1px solid #F2ECE4;}
+.aj-l1{display:flex;align-items:center;gap:10px;}
+.aj-l1 .n{flex:1;font-size:16px;font-weight:400;line-height:1.25;}
+.aj-x{width:32px;height:32px;border-radius:9px;color:var(--tenue);font-size:19px;line-height:1;}
+.aj-x:active{background:var(--terra-soft);color:var(--terra);}
+.aj-l2{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;}
+.flechas{display:flex;gap:6px;align-items:center;}
+.flechas button{width:38px;height:34px;border-radius:10px;background:#F5F0E9;color:var(--terra);font-size:15px;line-height:1;}
+.flechas button:active{background:var(--terra-soft);}
+.flechas button:disabled{opacity:.3;}
+.btn-fija{padding:0 12px;height:34px;border-radius:10px;background:#F5F0E9;color:#7C7168;font-size:14px;white-space:nowrap;}
+.btn-fija.on{background:var(--terra-soft);color:var(--terra);font-weight:600;}
+.pill-auto{font-size:12px;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px 2px;border-radius:999px;
+  background:var(--sage-soft);color:#4F6B57;font-weight:600;}
+.nuevo{margin-top:4px;padding-top:14px;border-top:1px dashed var(--line);}
+.nuevo input[type=text]{width:100%;font-size:16px;font-weight:400;color:var(--ink);background:#F5F0E9;
+  border:none;border-radius:11px;padding:13px 14px;}
+.nuevo input[type=text]::placeholder{color:var(--tenue);font-weight:300;}
+.nuevo input[type=text]:focus{outline:2px solid var(--terra-soft);}
+.nuevo-l2{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:10px;}
+.btn-agregar{background:var(--terra);color:#fff;border-radius:12px;padding:13px 22px 10px;font-size:16px;font-weight:600;letter-spacing:.4px;}
+.btn-agregar:active{transform:scale(.97);}
+.sug{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
+.sug button{padding:8px 13px 6px;border-radius:999px;background:var(--sage-soft);color:#4F6B57;font-size:14px;}
+.sug .vacio{color:var(--muted);font-size:14px;font-weight:300;padding:4px 0;}
+.toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 0;font-size:16px;}
+.toggle + .toggle{border-top:1px solid #F2ECE4;}
+.sw{width:50px;height:29px;border-radius:99px;background:#E4DCD2;position:relative;transition:background .18s;flex:0 0 auto;}
+.sw.on{background:var(--sage);}
+.sw i{position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:99px;background:#fff;
+  transition:left .18s;box-shadow:0 1px 3px rgba(0,0,0,.16);}
+.sw.on i{left:24px;}
+
+/* ---------- BIBLIOTECA ---------- */
+.bib{display:flex;align-items:center;gap:12px;padding:11px 0;font-size:16px;}
+.bib + .bib{border-top:1px solid #F2ECE4;}
+.bib .n{flex:1;}
+.bib .prom{font-weight:600;font-variant-numeric:tabular-nums;}
+.bib .veces{font-size:14px;font-weight:300;color:var(--muted);width:44px;text-align:right;}
+.bib .mini{width:32px;height:32px;border-radius:9px;color:var(--tenue);font-size:15px;}
+.bib .mini:active{background:var(--terra-soft);color:var(--terra);}
+
+/* ---------- REGISTRO ---------- */
+.reg{padding:12px 0;cursor:pointer;}
+.reg + .reg{border-top:1px solid #F2ECE4;}
+.reg-l1{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+.reg-fecha{font-size:16px;font-weight:500;}
+.reg-delta{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;}
+.reg-delta.mas{color:var(--terra);} .reg-delta.menos{color:var(--sage);} .reg-delta.igual{color:var(--muted);}
+.reg-l2{font-size:15px;font-weight:300;color:var(--muted);margin-top:2px;}
+.reg-detalle{margin-top:9px;padding:10px 12px;background:#FBF8F4;border-radius:12px;}
+.reg-paso{display:flex;gap:10px;font-size:15px;padding:4px 0;}
+.reg-paso .n{flex:1;font-weight:300;}
+.reg-paso .v{font-variant-numeric:tabular-nums;width:96px;text-align:right;color:var(--muted);font-weight:300;}
+.reg-vacio{font-size:15px;font-weight:300;color:var(--muted);padding:6px 0;}
+
+.reiniciar{display:block;margin:26px auto 0;padding:12px 26px 9px;font-size:15px;font-weight:400;
+  color:var(--muted);border-radius:999px;border:1px solid var(--line);}
+.oculto{display:none!important;}
+
+/* ---------- ESCRITORIO ---------- */
+@media (min-width:900px){
+  .wrap{max-width:1040px;}
+  .header-in{max-width:1040px;}
+  .rejilla{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:22px;align-items:start;}
+  .col-a{position:sticky;top:20px;}
+  .col-a .card,.col-a .empezar{margin-top:0;}
+  .col-a .card + .card{margin-top:16px;}
+  .col-b > .card:first-child{margin-top:0;}
+  body{font-size:18px;}
+  .ahora-nombre{font-size:36px;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-in">
+    <h1>Rutina de la mañana</h1>
+    <div class="sub"><span id="fecha">—</span><span class="reloj" id="reloj">—</span></div>
+    <div class="estado" id="estado">sin empezar</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="rutinas" id="rutinas"></div>
+
+  <div class="aviso oculto" id="aviso-guardado">
+    Este navegador no está guardando tus cambios. Abre la página publicada, no una vista previa.
+  </div>
+
+  <div class="rejilla">
+    <div class="col-a">
+
+      <section id="vista-inicio">
+        <button class="empezar" onclick="empezar()">E M P E C É</button>
+        <div class="preview" id="preview">—</div>
+      </section>
+
+      <section id="vista-ahora" class="oculto">
+        <div class="card">
+          <span class="eyebrow">Ahora</span>
+          <h2 class="ahora-nombre" id="ahora-nombre">—</h2>
+          <div class="rango" id="rango">—</div>
+          <div class="barra" id="barra"><span id="barra-fill" style="width:0%"></span></div>
+          <div class="crono" id="crono">—</div>
+          <button class="btn-listo" onclick="listo()">L I S T O</button>
+          <div class="sub-acciones">
+            <button class="recalc" onclick="recalcular()">recalcular</button>
+            <button onclick="saltar()">saltar</button>
+          </div>
+        </div>
+        <div class="eta" id="eta"><span id="eta-txt">—</span></div>
+        <div class="colchon oculto" id="colchon">—</div>
+      </section>
+
+      <section id="vista-final" class="oculto">
+        <div class="card">
+          <span class="eyebrow">Saliste</span>
+          <div class="final-hora" id="final-hora">—</div>
+          <div class="final-linea" id="final-l1">—</div>
+          <div class="final-linea" id="final-l2">—</div>
+        </div>
+        <div class="card">
+          <span class="eyebrow neutro">Cómo te fue</span>
+          <div class="hr"></div>
+          <div id="calif"></div>
+        </div>
+      </section>
+
+    </div>
+    <div class="col-b">
+
+      <section class="card" id="vista-lista">
+        <div class="lista-head">
+          <span class="eyebrow neutro">La rutina</span>
+          <span class="total" id="total">—</span>
+          <button class="btn-orden" id="btn-orden" onclick="toggleOrden()">reordenar</button>
+        </div>
+        <div class="hr"></div>
+        <div id="lista"></div>
+      </section>
+
+      <section class="card">
+        <div class="plegable-head" onclick="togglePanel('registro')">
+          <span class="eyebrow neutro">Registro</span>
+          <span class="chev" id="chev-registro">⌄</span>
+        </div>
+        <div id="registro" class="oculto"><div class="hr"></div><div id="registro-lista"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="plegable-head" onclick="togglePanel('biblio')">
+          <span class="eyebrow neutro">Mis tareas</span>
+          <span class="chev" id="chev-biblio">⌄</span>
+        </div>
+        <div id="biblio" class="oculto"><div class="hr"></div><div id="biblio-lista"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="plegable-head" onclick="togglePanel('ajustes')">
+          <span class="eyebrow neutro">Ajustes</span>
+          <span class="chev" id="chev-ajustes">⌄</span>
+        </div>
+        <div id="ajustes" class="oculto">
+          <div class="hr"></div>
+          <div id="aj-pasos"></div>
+          <div class="hr"></div>
+          <div class="toggle"><span>Sonido al terminar un paso</span>
+            <div class="sw" id="sw-sonido" onclick="toggleCfg('sonido')"><i></i></div></div>
+          <div class="toggle"><span>Vibrar cuando me paso</span>
+            <div class="sw" id="sw-vibrar" onclick="toggleCfg('vibrar')"><i></i></div></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <button class="reiniciar" onclick="reiniciar()">reiniciar el día</button>
+</div>
+
+<script>
+/* ================= ALMACENAMIENTO ================= */
+const K_CFG='rutina_cfg_v2', K_RUN='rutina_run_v2', K_LOG='rutina_log_v1';
+const K_CFG_VIEJO='rutina_cfg_v1', K_RUN_VIEJO='rutina_run_v1';
+const DIAS_REGISTRO=90;
+
+let almacenaOK=true;
+try{ localStorage.setItem('__prueba','1'); localStorage.removeItem('__prueba'); }
+catch(e){ almacenaOK=false; }
+
+const PASOS_DEFAULT=[
+  {id:'p1',n:'Despierto y pastillas',m:10},
+  {id:'p2',n:'Me levanto de la cama',m:5},
+  {id:'p3',n:'Baño',m:15},
+  {id:'p4',n:'Cara y dientes',m:15},
+  {id:'p5',n:'Me visto',m:15},
+  {id:'p6',n:'Maquillaje',m:10},
+  {id:'p7',n:'Licuado',m:5}
+];
+const CFG_DEFAULT={
+  rutinas:[{id:'r1',nombre:'Entre semana',horaBase:'06:00',traslado:30,pasos:PASOS_DEFAULT}],
+  activa:'r1', biblioteca:[], sonido:true, vibrar:true
+};
+
+let cfg, run, store, registro=[];
+let panel={registro:false,biblio:false,ajustes:false};
+let modoOrden=false, nuevoNombre='', nuevoMin=10, regAbierto=null;
+
+function R(){
+  let r=cfg.rutinas.find(x=>x.id===cfg.activa);
+  if(!r){ r=cfg.rutinas[0]; cfg.activa=r.id; }
+  return r;
+}
+function bibDe(bid){ return bid ? cfg.biblioteca.find(b=>b.id===bid) : null; }
+
+function cargar(){
+  try{ cfg=JSON.parse(localStorage.getItem(K_CFG))||null; }catch(e){ cfg=null; }
+  if(!cfg){                                   // migrar desde la versión anterior
+    let v=null;
+    try{ v=JSON.parse(localStorage.getItem(K_CFG_VIEJO))||null; }catch(e){ v=null; }
+    if(v && v.rutinas) cfg={rutinas:v.rutinas,activa:v.activa,biblioteca:[],sonido:v.sonido!==false,vibrar:v.vibrar!==false};
+    else if(v && v.pasos) cfg={rutinas:[{id:'r1',nombre:'Entre semana',horaBase:v.horaBase||'06:00',
+      traslado:v.traslado||30,pasos:v.pasos}],activa:'r1',biblioteca:[],sonido:v.sonido!==false,vibrar:v.vibrar!==false};
+  }
+  if(!cfg||!cfg.rutinas||!cfg.rutinas.length) cfg=JSON.parse(JSON.stringify(CFG_DEFAULT));
+  if(!cfg.biblioteca) cfg.biblioteca=[];
+  cfg.rutinas.forEach(r=>{
+    if(!r.horaBase) r.horaBase='06:00';
+    if(!r.traslado) r.traslado=30;
+    if(!r.pasos) r.pasos=[];
+    r.pasos.forEach(p=>{ if(p.fija===undefined) p.fija=null; if(p.bid===undefined) p.bid=null; });
+  });
+  try{ store=JSON.parse(localStorage.getItem(K_RUN))||null; }catch(e){ store=null; }
+  if(!store||!store.r) { try{ const v=JSON.parse(localStorage.getItem(K_RUN_VIEJO)); if(v&&v.r) store=v; }catch(e){} }
+  if(!store || store.dia!==hoyISO() || !store.r) store={dia:hoyISO(),r:{}};
+  run=store.r[cfg.activa]||null;
+  try{ registro=JSON.parse(localStorage.getItem(K_LOG))||[]; }catch(e){ registro=[]; }
+  if(!Array.isArray(registro)) registro=[];
+}
+function guardarCfg(){ try{ localStorage.setItem(K_CFG,JSON.stringify(cfg)); }catch(e){} }
+function guardarRun(){
+  store.dia=hoyISO();
+  if(run) store.r[cfg.activa]=run; else delete store.r[cfg.activa];
+  try{ localStorage.setItem(K_RUN,JSON.stringify(store)); }catch(e){}
+}
+function guardarLog(){
+  if(registro.length>DIAS_REGISTRO) registro=registro.slice(0,DIAS_REGISTRO);
+  try{ localStorage.setItem(K_LOG,JSON.stringify(registro)); }catch(e){}
+}
+
+/* ================= TIEMPO ================= */
+function hoyISO(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function hhmm(ts){ const d=new Date(ts); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function mmss(ms){ if(ms<0) ms=0; const s=Math.floor(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function minTxt(m){ if(m>=60){ const h=Math.floor(m/60),r=m%60; return r? h+' h '+r+' min' : h+' h'; } return m+' min'; }
+function fmtMin(t){ t=((t%1440)+1440)%1440; return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0'); }
+function aMin(hm){ const m=/^(\d{1,2}):(\d{2})$/.exec(hm||''); return m? (+m[1])*60+(+m[2]) : null; }
+function hoyA(hm){ const t=aMin(hm); if(t===null) return null; const d=new Date(); d.setHours(Math.floor(t/60),t%60,0,0); return d.getTime(); }
+function fechaLarga(d){
+  d=d||new Date();
+  const dias=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const mes=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return dias[d.getDay()]+' '+d.getDate()+' de '+mes[d.getMonth()];
+}
+function fechaCorta(iso){
+  const p=iso.split('-'); const d=new Date(+p[0],+p[1]-1,+p[2]);
+  const dias=['dom','lun','mar','mié','jue','vie','sáb'];
+  const mes=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return dias[d.getDay()]+' '+d.getDate()+' '+mes[d.getMonth()];
+}
+
+/* ================= CÁLCULO ================= */
+function baseMin(){ const t=aMin(R().horaBase); return t===null?360:t; }
+function totalPlan(){ return R().pasos.reduce((a,p)=>a+p.m,0); }
+function horasPlan(){
+  let t=baseMin(); const out=[];
+  R().pasos.forEach(p=>{
+    const f=aMin(p.fija);
+    if(f!==null && f>t) t=f;
+    out.push(fmtMin(t)); t+=p.m;
+  });
+  out.push(fmtMin(t));
+  out.push(fmtMin(t+R().traslado));
+  return out;
+}
+function llegadaPlanMs(){
+  const h=horasPlan(); const t=aMin(h[h.length-1]);
+  const d=new Date(); d.setHours(Math.floor(t/60),t%60,0,0); return d.getTime();
+}
+function hayFijas(){ return R().pasos.some(p=>p.fija); }
+function idxActual(){
+  if(!run) return -1;
+  const ps=R().pasos;
+  for(let i=0;i<ps.length;i++){ if(!run.hechos[ps[i].id]) return i; }
+  return -1;
+}
+function inicioDePaso(){
+  let t=run.inicio;
+  Object.keys(run.hechos).forEach(k=>{ if(run.hechos[k].t>t) t=run.hechos[k].t; });
+  return t;
+}
+function calcular(){
+  const i=idxActual(); if(i<0) return null;
+  const ps=R().pasos, ahora=Date.now();
+  const ini=inicioDePaso();
+  const plan=ps[i].m*60000;
+  const arranques=new Array(ps.length).fill(null);
+  arranques[i]=ini;
+  let t=Math.max(ini+plan,ahora);
+  let ancla=null;                       // primera hora fija pendiente
+  for(let k=i+1;k<ps.length;k++){
+    const f=hoyA(ps[k].fija);
+    if(f!==null){
+      if(ancla===null) ancla={i:k,fija:f,natural:t,holgura:Math.round((f-t)/60000)};
+      if(f>t) t=f;
+    }
+    arranques[k]=t;
+    t+=ps[k].m*60000;
+  }
+  const salida=t, llegada=t+R().traslado*60000;
+  const base=hayFijas()? llegadaPlanMs() : run.inicio+(totalPlan()+R().traslado)*60000;
+  return {i,ini,plan,transcurrido:ahora-ini,arranques,salida,llegada,ancla,
+          delta:Math.round((llegada-base)/60000)};
+}
+
+/* ================= ACCIONES DE LA RUTINA ================= */
+function empezar(){ run={inicio:Date.now(),hechos:{},fin:null}; guardarRun(); render(); }
+
+function cerrarPaso(saltado,recalc){
+  const c=calcular(); if(!c) return;
+  const p=R().pasos[c.i];
+  const real=Math.max(0,Math.round((Date.now()-c.ini)/60000));
+  run.hechos[p.id]={t:Date.now(),saltado:!!saltado,real:real};
+  if(recalc && !saltado) aplicarRecalculo(p,real);
+  if(idxActual()<0){ run.fin=Date.now(); }
+  guardarRun();
+  if(run.fin) registrarDia();
+  if(!saltado && cfg.sonido) beep();
+  render();
+}
+function listo(){ cerrarPaso(false,false); }
+function saltar(){ cerrarPaso(true,false); }
+function recalcular(){
+  const c=calcular(); if(!c) return;
+  const p=R().pasos[c.i];
+  if(!p.bid){
+    const real=Math.max(1,Math.round((Date.now()-c.ini)/60000));
+    if(confirm('«'+p.n+'» no está en tus tareas guardadas, así que su tiempo no se ajusta solo.\n\n¿Guardarla ahora para que empiece a promediar? (tardaste '+real+' min)')){
+      const b={id:nuevoId(),n:p.n,m:real,muestras:[real]};
+      cfg.biblioteca.push(b); p.bid=b.id; p.m=real; guardarCfg();
+      cerrarPaso(false,false); return;
+    }
+  }
+  cerrarPaso(false,true);
+}
+function aplicarRecalculo(p,real){
+  if(real<1) real=1;
+  const b=bibDe(p.bid);
+  if(!b) return;                              // tarea suelta: no se toca, tal cual pediste
+  b.muestras=(b.muestras||[]).concat([real]);
+  b.m=Math.max(1,Math.round(b.muestras.reduce((a,x)=>a+x,0)/b.muestras.length));
+  cfg.rutinas.forEach(r=>r.pasos.forEach(x=>{ if(x.bid===b.id) x.m=b.m; }));
+  guardarCfg();
+}
+function deshacer(i){
+  const ps=R().pasos, p=ps[i];
+  if(!run||!run.hechos[p.id]) return;
+  if(!confirm('¿Volver a «'+p.n+'»?\nSe borran también los pasos siguientes.')) return;
+  for(let k=i;k<ps.length;k++) delete run.hechos[ps[k].id];
+  run.fin=null; guardarRun(); quitarRegistroDeHoy(); render();
+}
+function reiniciar(){
+  if(!run) return;
+  if(!confirm('¿Reiniciar el día? Se borra el avance de hoy.')) return;
+  run=null; guardarRun(); quitarRegistroDeHoy(); render();
+}
+
+/* ================= REGISTRO ================= */
+function registrarDia(){
+  const r=R();
+  const pasos=r.pasos.map(p=>{ const h=run.hechos[p.id];
+    return {n:p.n,plan:p.m,real:h?h.real:0,saltado:h?!!h.saltado:false}; });
+  const e={fecha:hoyISO(),rid:r.id,rutina:r.nombre,inicio:run.inicio,fin:run.fin,
+           traslado:r.traslado,pasos:pasos};
+  const i=registro.findIndex(x=>x.fecha===e.fecha&&x.rid===e.rid);
+  if(i>=0) registro[i]=e; else registro.unshift(e);
+  registro.sort((a,b)=>b.fin-a.fin);
+  guardarLog();
+}
+function quitarRegistroDeHoy(){
+  const antes=registro.length;
+  registro=registro.filter(x=>!(x.fecha===hoyISO()&&x.rid===cfg.activa));
+  if(registro.length!==antes) guardarLog();
+}
+
+/* ================= PASOS ================= */
+function nuevoId(){ return 'c'+Date.now().toString(36)+Math.floor(Math.random()*99); }
+function agregarPaso(){
+  const n=(nuevoNombre||'').trim();
+  if(!n){ const i=document.getElementById('nuevo-nombre'); if(i) i.focus(); return; }
+  const b=cfg.biblioteca.find(x=>x.n.toLowerCase()===n.toLowerCase());
+  R().pasos.push({id:nuevoId(),n:b?b.n:n,m:b?b.m:nuevoMin,bid:b?b.id:null,fija:null});
+  nuevoNombre=''; nuevoMin=10;
+  guardarCfg(); render();
+}
+function agregarDeBiblioteca(bid){
+  const b=bibDe(bid); if(!b) return;
+  R().pasos.push({id:nuevoId(),n:b.n,m:b.m,bid:b.id,fija:null});
+  guardarCfg(); render();
+}
+function borrarPaso(i){
+  const ps=R().pasos, p=ps[i];
+  if(ps.length<=1){ alert('Necesitas dejar al menos un paso.'); return; }
+  if(!confirm('¿Quitar «'+p.n+'» de esta rutina?')) return;
+  ps.splice(i,1);
+  if(run && run.hechos[p.id]){ delete run.hechos[p.id]; run.fin=idxActual()<0?(run.fin||Date.now()):null; guardarRun(); }
+  guardarCfg(); render();
+}
+function moverPaso(i,d){
+  const ps=R().pasos, j=i+d;
+  if(j<0||j>=ps.length) return;
+  if(ps[i].fija||ps[j].fija){ alert('Los pasos con hora fija no se mueven de lugar.'); return; }
+  const t=ps[i]; ps[i]=ps[j]; ps[j]=t;
+  guardarCfg(); render();
+}
+function traerAhora(i){
+  const ps=R().pasos, c=calcular(); if(!c) return;
+  if(i<=c.i) return;
+  if(ps[i].fija){ alert('Ese paso tiene hora fija, no se puede adelantar.'); return; }
+  for(let k=c.i;k<i;k++){
+    if(ps[k].fija){ alert('«'+ps[k].n+'» tiene hora fija y quedaría después. Quítale la hora fija si quieres reacomodar alrededor.'); return; }
+  }
+  const p=ps.splice(i,1)[0];
+  ps.splice(c.i,0,p);
+  guardarCfg(); render();
+}
+function fijarPaso(i){
+  const p=R().pasos[i];
+  const v=prompt('Hora fija de «'+p.n+'» en formato HH:MM.\nDéjalo vacío para quitarla.', p.fija||'');
+  if(v===null) return;
+  const t=v.trim();
+  if(!t){ p.fija=null; guardarCfg(); render(); return; }
+  if(aMin(t)===null){ alert('Formato no válido. Usa por ejemplo 07:15'); return; }
+  p.fija=fmtMin(aMin(t));
+  guardarCfg(); render();
+}
+function ajustar(id,d){
+  if(id==='traslado'){ R().traslado=Math.max(0,Math.min(180,R().traslado+d)); }
+  else{
+    const p=R().pasos.find(x=>x.id===id); if(!p) return;
+    p.m=Math.max(1,Math.min(180,p.m+d));
+    const b=bibDe(p.bid);
+    if(b){ b.m=p.m; cfg.rutinas.forEach(r=>r.pasos.forEach(x=>{ if(x.bid===b.id) x.m=b.m; })); }
+  }
+  guardarCfg(); render();
+}
+
+/* ================= BIBLIOTECA ================= */
+function reiniciarPromedio(bid){
+  const b=bibDe(bid); if(!b) return;
+  if(!confirm('¿Borrar las '+(b.muestras||[]).length+' mediciones de «'+b.n+'»?\nEl tiempo se queda en '+b.m+' min y vuelve a promediar desde cero.')) return;
+  b.muestras=[]; guardarCfg(); render();
+}
+function borrarBib(bid){
+  const b=bibDe(bid); if(!b) return;
+  if(!confirm('¿Quitar «'+b.n+'» de tus tareas guardadas?\nLos pasos que la usan se quedan, pero dejan de auto-ajustarse.')) return;
+  cfg.rutinas.forEach(r=>r.pasos.forEach(p=>{ if(p.bid===bid) p.bid=null; }));
+  cfg.biblioteca=cfg.biblioteca.filter(x=>x.id!==bid);
+  guardarCfg(); render();
+}
+
+/* ================= RUTINAS ================= */
+function cambiarRutina(id){ cfg.activa=id; guardarCfg(); run=store.r[id]||null; modoOrden=false; render(); }
+function nuevaRutina(){
+  const n=(prompt('Nombre de la nueva rutina','Rutina '+(cfg.rutinas.length+1))||'').trim();
+  if(!n) return;
+  const id=nuevoId();
+  cfg.rutinas.push({id:id,nombre:n,horaBase:'06:00',traslado:30,
+    pasos:[{id:nuevoId(),n:'Levantarme',m:10,bid:null,fija:null}]});
+  cfg.activa=id; guardarCfg(); run=null; panel.ajustes=true; render();
+}
+function duplicarRutina(){
+  const copia=JSON.parse(JSON.stringify(R()));
+  copia.id=nuevoId(); copia.nombre=R().nombre+' (copia)';
+  copia.pasos.forEach(x=>x.id=nuevoId());
+  cfg.rutinas.push(copia); cfg.activa=copia.id;
+  guardarCfg(); run=null; render();
+}
+function borrarRutina(){
+  if(cfg.rutinas.length<=1){ alert('Necesitas dejar al menos una rutina.'); return; }
+  const r=R();
+  if(!confirm('¿Borrar la rutina «'+r.nombre+'»? No se puede deshacer.')) return;
+  delete store.r[r.id];
+  cfg.rutinas=cfg.rutinas.filter(x=>x.id!==r.id);
+  cfg.activa=cfg.rutinas[0].id;
+  guardarCfg();
+  try{ localStorage.setItem(K_RUN,JSON.stringify(store)); }catch(e){}
+  run=store.r[cfg.activa]||null; render();
+}
+function toggleCfg(k){ cfg[k]=!cfg[k]; guardarCfg(); render(); }
+function togglePanel(k){ panel[k]=!panel[k]; render(); }
+function toggleOrden(){ modoOrden=!modoOrden; render(); }
+
+/* ================= SONIDO ================= */
+let ac=null;
+function beep(){
+  try{
+    ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    if(ac.state==='suspended') ac.resume();
+    const o=ac.createOscillator(), g=ac.createGain();
+    o.type='sine'; o.frequency.value=660;
+    g.gain.setValueAtTime(.0001,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(.16,ac.currentTime+.02);
+    g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.38);
+    o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+.4);
+  }catch(e){}
+}
+let yaVibro=false;
+function quizasVibrar(over){
+  if(!cfg.vibrar) return;
+  if(over&&!yaVibro){ yaVibro=true; if(navigator.vibrate) navigator.vibrate([40,60,40]); }
+  if(!over) yaVibro=false;
+}
+
+/* ================= RENDER ================= */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function render(){
+  document.getElementById('fecha').textContent=fechaLarga();
+  document.getElementById('reloj').textContent=hhmm(Date.now());
+  document.getElementById('aviso-guardado').classList.toggle('oculto',almacenaOK);
+  renderRutinas();
+
+  const terminado=!!(run&&run.fin);
+  document.getElementById('vista-inicio').classList.toggle('oculto',!!run);
+  document.getElementById('vista-ahora').classList.toggle('oculto',!run||terminado);
+  document.getElementById('vista-final').classList.toggle('oculto',!terminado);
+  document.getElementById('vista-lista').classList.toggle('oculto',terminado);
+
+  const est=document.getElementById('estado');
+  if(!run) est.textContent='sin empezar';
+  else if(terminado) est.textContent='saliste '+hhmm(run.fin);
+  else est.textContent='en curso · empecé '+hhmm(run.inicio);
+
+  if(!run) renderPreview();
+  if(!terminado) renderLista();
+  if(run&&!terminado) renderAhora();
+  if(terminado) renderFinal();
+  renderRegistro(); renderBiblio(); renderAjustes();
+}
+function renderPreview(){
+  const llega=Date.now()+(totalPlan()+R().traslado)*60000;
+  document.getElementById('preview').innerHTML='Si empiezas ahora, llegarías a las <b>'+hhmm(llega)+'</b>';
+}
+function renderRutinas(){
+  const cont=document.getElementById('rutinas'); cont.innerHTML='';
+  cfg.rutinas.forEach(r=>{
+    const b=document.createElement('button');
+    if(r.id===cfg.activa) b.className='on';
+    b.textContent=r.nombre; b.onclick=()=>cambiarRutina(r.id);
+    cont.appendChild(b);
+  });
+  const mas=document.createElement('button');
+  mas.className='mas'; mas.textContent='+ nueva'; mas.onclick=nuevaRutina;
+  cont.appendChild(mas);
+}
+function renderAhora(){
+  const c=calcular(); if(!c) return;
+  const p=R().pasos[c.i];
+  document.getElementById('ahora-nombre').textContent=p.n;
+  const over=c.transcurrido>c.plan;
+  document.getElementById('barra').classList.toggle('over',over);
+  document.getElementById('barra-fill').style.width=Math.min(100,(c.transcurrido/c.plan)*100)+'%';
+  const rango=document.getElementById('rango');
+  rango.classList.toggle('over',over);
+  rango.innerHTML='Empezaste <b>'+hhmm(c.ini)+'</b><span class="flecha">→</span>hasta las <b class="fin">'+hhmm(c.ini+c.plan)+'</b>';
+  document.getElementById('crono').innerHTML='<b>'+mmss(c.transcurrido)+'</b> de '+p.m+' min';
+  quizasVibrar(over);
+
+  const eta=document.getElementById('eta');
+  eta.classList.toggle('tarde',c.delta>0);
+  const d=c.delta>0?'+'+c.delta+' min':(c.delta<0?c.delta+' min':'justo a tiempo');
+  document.getElementById('eta-txt').innerHTML='Llegarías '+hhmm(c.llegada)+' <span class="sep">·</span> <span class="delta">'+d+'</span>';
+
+  const col=document.getElementById('colchon');
+  if(c.ancla){
+    const a=c.ancla, nom=R().pasos[a.i].n;
+    col.classList.remove('oculto');
+    col.className='colchon '+(a.holgura>=0?'ok':'mal');
+    col.innerHTML=a.holgura>=0
+      ? 'Te sobran <b>'+a.holgura+' min</b> antes de «'+esc(nom)+'» ('+hhmm(a.fija)+')'
+      : 'Vas <b>'+Math.abs(a.holgura)+' min tarde</b> para «'+esc(nom)+'» ('+hhmm(a.fija)+')';
+  } else col.classList.add('oculto');
+}
+function renderLista(){
+  const r=R(), ps=r.pasos, hp=horasPlan(), c=run?calcular():null;
+  document.getElementById('total').textContent=minTxt(totalPlan()+r.traslado);
+  const bo=document.getElementById('btn-orden');
+  bo.classList.toggle('on',modoOrden);
+  bo.textContent=modoOrden?'listo':'reordenar';
+  const cont=document.getElementById('lista'); cont.innerHTML='';
+
+  ps.forEach((p,k)=>{
+    const h=run?run.hechos[p.id]:null;
+    const div=document.createElement('div');
+    let cls='paso', marca='', dato='';
+    if(h){
+      cls+=' hecho'+(h.saltado?' saltado':'');
+      marca='✓'; dato=h.saltado?'saltado':hhmm(h.t);
+      if(!modoOrden) div.onclick=()=>deshacer(k);
+    } else if(c&&k===c.i){ cls+=' activo'; marca='●'; dato='ahora'; }
+    else if(c){ cls+=' pend'; dato='~'+hhmm(c.arranques[k]); }
+    else { cls+=' pend'; dato=p.m+' min'; }
+    if(p.fija && !h) cls+=' fija';
+    div.className=cls;
+
+    const auto=p.bid?'<span class="auto">●</span>':'';
+    let derecha='<span class="dato">'+dato+'</span>';
+    if(modoOrden && !h){
+      derecha='<span class="orden-btns">'+
+        '<button data-mv="'+k+'" data-d="-1"'+(k===0||p.fija?' disabled':'')+'>↑</button>'+
+        '<button data-mv="'+k+'" data-d="1"'+(k===ps.length-1||p.fija?' disabled':'')+'>↓</button>'+
+        ((c&&k>c.i&&!p.fija)?'<button class="ahora" data-ya="'+k+'">▸ ahora</button>':'')+
+        '</span>';
+    }
+    div.innerHTML='<span class="marca">'+marca+'</span><span class="hplan">'+
+      (p.fija?'⚲'+hp[k]:hp[k])+'</span><span class="nombre">'+esc(p.n)+auto+'</span>'+derecha;
+    cont.appendChild(div);
+
+    if(c && c.ancla && c.ancla.i===k && !modoOrden){
+      const nota=document.createElement('div');
+      nota.className='nota-ancla '+(c.ancla.holgura>=0?'ok':'mal');
+      nota.innerHTML=c.ancla.holgura>=0
+        ? 'te sobran <b>'+c.ancla.holgura+' min</b> antes de esta'
+        : 'vas <b>'+Math.abs(c.ancla.holgura)+' min tarde</b> para esta';
+      cont.appendChild(nota);
+    }
+  });
+
+  const tr=document.createElement('div');
+  tr.className='fila-traslado';
+  tr.innerHTML='<span class="ico">→</span><span class="hplan">'+hp[ps.length]+'</span>'+
+    '<span class="nombre">Traslado</span><span class="dato">'+(c?'~'+hhmm(c.salida):r.traslado+' min')+'</span>';
+  cont.appendChild(tr);
+
+  const ll=document.createElement('div');
+  ll.className='fila-llegas';
+  const llega=c?c.llegada:Date.now()+(totalPlan()+r.traslado)*60000;
+  ll.innerHTML='<span class="ico"></span><span class="hplan">'+hp[ps.length+1]+'</span>'+
+    '<span class="nombre">Llegas</span><span class="h">'+hhmm(llega)+'</span>';
+  cont.appendChild(ll);
+
+  cont.querySelectorAll('[data-mv]').forEach(b=>{
+    b.onclick=e=>{ e.stopPropagation(); moverPaso(+b.dataset.mv,+b.dataset.d); };
+  });
+  cont.querySelectorAll('[data-ya]').forEach(b=>{
+    b.onclick=e=>{ e.stopPropagation(); traerAhora(+b.dataset.ya); };
+  });
+}
+function renderFinal(){
+  const r=R();
+  document.getElementById('final-hora').textContent=hhmm(run.fin);
+  const realMin=Math.round((run.fin-run.inicio)/60000), dif=realMin-totalPlan();
+  document.getElementById('final-l1').innerHTML='Llegas aprox <b>'+hhmm(run.fin+r.traslado*60000)+'</b>';
+  let l2='Tardaste <b>'+minTxt(realMin)+'</b> en arreglarte';
+  l2+= dif>0? ' ('+dif+' min más que lo planeado)' : (dif<0? ' ('+Math.abs(dif)+' min menos que lo planeado)' : ' (justo lo planeado)');
+  document.getElementById('final-l2').innerHTML=l2;
+
+  const cont=document.getElementById('calif'); cont.innerHTML='';
+  r.pasos.forEach(p=>{
+    const h=run.hechos[p.id], real=h?h.real:0;
+    let cl='real', txt=real+' min';
+    if(h&&h.saltado){ cl+=' nada'; txt='saltado'; }
+    else if(real>p.m) cl+=' mas'; else if(real<p.m) cl+=' menos';
+    const d=document.createElement('div');
+    d.className='calif';
+    d.innerHTML='<span class="n">'+esc(p.n)+(p.bid?'<span class="auto"> ●</span>':'')+'</span>'+
+      '<span class="plan">'+p.m+'</span><span class="'+cl+'">'+txt+'</span>';
+    cont.appendChild(d);
+  });
+}
+function renderRegistro(){
+  document.getElementById('registro').classList.toggle('oculto',!panel.registro);
+  document.getElementById('chev-registro').textContent=panel.registro?'⌃':'⌄';
+  if(!panel.registro) return;
+  const cont=document.getElementById('registro-lista'); cont.innerHTML='';
+  if(!registro.length){
+    cont.innerHTML='<div class="reg-vacio">Todavía no terminas ninguna rutina. Cuando cierres el último paso, el día se guarda aquí.</div>';
+    return;
+  }
+  registro.forEach(e=>{
+    const plan=e.pasos.reduce((a,p)=>a+p.plan,0);
+    const real=Math.round((e.fin-e.inicio)/60000), dif=real-plan;
+    const d=document.createElement('div');
+    d.className='reg';
+    const cl=dif>0?'mas':(dif<0?'menos':'igual');
+    const dtxt=dif>0?'+'+dif:(dif<0?''+dif:'±0');
+    let html='<div class="reg-l1"><span class="reg-fecha">'+fechaCorta(e.fecha)+' · '+esc(e.rutina)+'</span>'+
+      '<span class="reg-delta '+cl+'">'+dtxt+'</span></div>'+
+      '<div class="reg-l2">empecé '+hhmm(e.inicio)+' · salí '+hhmm(e.fin)+' · '+minTxt(real)+'</div>';
+    if(regAbierto===e.fecha+e.rid){
+      html+='<div class="reg-detalle">';
+      e.pasos.forEach(p=>{
+        html+='<div class="reg-paso"><span class="n">'+esc(p.n)+'</span><span class="v">'+
+          (p.saltado?'saltado':'plan '+p.plan+' · real '+p.real)+'</span></div>';
+      });
+      html+='</div>';
+    }
+    d.innerHTML=html;
+    d.onclick=()=>{ regAbierto=(regAbierto===e.fecha+e.rid)?null:(e.fecha+e.rid); render(); };
+    cont.appendChild(d);
+  });
+}
+function renderBiblio(){
+  document.getElementById('biblio').classList.toggle('oculto',!panel.biblio);
+  document.getElementById('chev-biblio').textContent=panel.biblio?'⌃':'⌄';
+  if(!panel.biblio) return;
+  const cont=document.getElementById('biblio-lista'); cont.innerHTML='';
+  if(!cfg.biblioteca.length){
+    cont.innerHTML='<div class="reg-vacio">Aún no guardas tareas. Cuando toques «recalcular» en un paso, la app te ofrece guardarlo aquí para que su tiempo se vaya promediando solo.</div>';
+    return;
+  }
+  cfg.biblioteca.forEach(b=>{
+    const n=(b.muestras||[]).length;
+    const d=document.createElement('div');
+    d.className='bib';
+    d.innerHTML='<span class="n">'+esc(b.n)+'</span><span class="prom">'+b.m+' min</span>'+
+      '<span class="veces">'+n+'×</span>'+
+      '<button class="mini" data-rst="'+b.id+'" title="reiniciar promedio">↺</button>'+
+      '<button class="mini" data-del="'+b.id+'" title="quitar">×</button>';
+    cont.appendChild(d);
+  });
+  cont.querySelectorAll('[data-rst]').forEach(b=>b.onclick=()=>reiniciarPromedio(b.dataset.rst));
+  cont.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>borrarBib(b.dataset.del));
+}
+function renderAjustes(){
+  document.getElementById('ajustes').classList.toggle('oculto',!panel.ajustes);
+  document.getElementById('chev-ajustes').textContent=panel.ajustes?'⌃':'⌄';
+  document.getElementById('sw-sonido').classList.toggle('on',cfg.sonido);
+  document.getElementById('sw-vibrar').classList.toggle('on',cfg.vibrar);
+  if(!panel.ajustes) return;
+  const r=R(), cont=document.getElementById('aj-pasos'); cont.innerHTML='';
+
+  const fn=document.createElement('div');
+  fn.className='aj-fila';
+  fn.innerHTML='<input type="text" class="aj-nombre" id="aj-nombre" autocomplete="off">';
+  cont.appendChild(fn);
+  const acc=document.createElement('div');
+  acc.className='aj-acciones';
+  acc.innerHTML='<button id="aj-dup">duplicar rutina</button><button id="aj-del" class="peligro">borrar rutina</button>';
+  cont.appendChild(acc);
+
+  const fh=document.createElement('div');
+  fh.className='aj-fila';
+  fh.innerHTML='<span class="n">Empiezo a las</span><input type="time" class="aj-hora" id="aj-hora" value="'+r.horaBase+'">';
+  cont.appendChild(fh);
+  const nota=document.createElement('div');
+  nota.className='aj-nota';
+  nota.textContent='Es la referencia gris de la lista. El cálculo real usa la hora en que tocas «empecé».';
+  cont.appendChild(nota);
+
+  r.pasos.forEach((p,i)=>{
+    const d=document.createElement('div');
+    d.className='aj-item';
+    d.innerHTML=
+      '<div class="aj-l1"><span class="n">'+esc(p.n)+'</span>'+
+        (p.bid?'<span class="pill-auto">auto</span>':'')+
+        '<button class="aj-x" data-borrar="'+i+'">×</button></div>'+
+      '<div class="aj-l2">'+
+        '<span class="flechas">'+
+          '<button data-mover="'+i+'" data-d="-1"'+(i===0?' disabled':'')+'>↑</button>'+
+          '<button data-mover="'+i+'" data-d="1"'+(i===r.pasos.length-1?' disabled':'')+'>↓</button>'+
+          '<button class="btn-fija'+(p.fija?' on':'')+'" data-fija="'+i+'">'+(p.fija?'⚲ '+p.fija:'⚲ fijar')+'</button>'+
+        '</span>'+
+        '<span class="stepper">'+
+          '<button data-id="'+p.id+'" data-d="-5">−</button>'+
+          '<span class="val">'+p.m+' <small>min</small></span>'+
+          '<button data-id="'+p.id+'" data-d="5">+</button>'+
+        '</span>'+
+      '</div>';
+    cont.appendChild(d);
+  });
+
+  const tr=document.createElement('div');
+  tr.className='aj-fila';
+  tr.innerHTML='<span class="n">Traslado</span><span class="stepper">'+
+    '<button data-id="traslado" data-d="-5">−</button>'+
+    '<span class="val">'+r.traslado+' <small>min</small></span>'+
+    '<button data-id="traslado" data-d="5">+</button></span>';
+  cont.appendChild(tr);
+
+  const nv=document.createElement('div');
+  nv.className='nuevo';
+  let sug='';
+  const libres=cfg.biblioteca.filter(b=>!r.pasos.some(p=>p.bid===b.id));
+  if(libres.length) sug='<div class="sug">'+libres.map(b=>'<button data-bib="'+b.id+'">'+esc(b.n)+' · '+b.m+'</button>').join('')+'</div>';
+  nv.innerHTML='<input type="text" id="nuevo-nombre" placeholder="Nueva tarea" autocomplete="off" enterkeyhint="done">'+
+    '<div class="nuevo-l2"><span class="stepper">'+
+      '<button data-nuevo="-5">−</button><span class="val">'+nuevoMin+' <small>min</small></span>'+
+      '<button data-nuevo="5">+</button></span>'+
+      '<button class="btn-agregar" id="btn-agregar">+ agregar</button></div>'+sug;
+  cont.appendChild(nv);
+
+  cont.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>ajustar(b.dataset.id,+b.dataset.d));
+  cont.querySelectorAll('[data-mover]').forEach(b=>b.onclick=()=>moverPaso(+b.dataset.mover,+b.dataset.d));
+  cont.querySelectorAll('[data-borrar]').forEach(b=>b.onclick=()=>borrarPaso(+b.dataset.borrar));
+  cont.querySelectorAll('[data-fija]').forEach(b=>b.onclick=()=>fijarPaso(+b.dataset.fija));
+  cont.querySelectorAll('[data-bib]').forEach(b=>b.onclick=()=>agregarDeBiblioteca(b.dataset.bib));
+  cont.querySelectorAll('[data-nuevo]').forEach(b=>b.onclick=()=>{ nuevoMin=Math.max(1,Math.min(180,nuevoMin+ +b.dataset.nuevo)); render(); });
+
+  const inm=document.getElementById('aj-nombre');
+  inm.value=r.nombre;
+  inm.oninput=()=>{ r.nombre=inm.value||'Sin nombre'; guardarCfg();
+    for(const b of document.getElementById('rutinas').children){ if(b.classList.contains('on')) b.textContent=r.nombre; } };
+  document.getElementById('aj-dup').onclick=duplicarRutina;
+  document.getElementById('aj-del').onclick=borrarRutina;
+  const ih=document.getElementById('aj-hora');
+  ih.onchange=()=>{ if(ih.value){ r.horaBase=ih.value; guardarCfg(); render(); } };
+  const inn=document.getElementById('nuevo-nombre');
+  inn.value=nuevoNombre;
+  inn.oninput=()=>{ nuevoNombre=inn.value; };
+  inn.onkeydown=e=>{ if(e.key==='Enter'){ e.preventDefault(); inn.blur(); agregarPaso(); } };
+  document.getElementById('btn-agregar').onclick=agregarPaso;
+}
+
+/* ================= ARRANQUE ================= */
+cargar();
+render();
+setInterval(()=>{
+  document.getElementById('reloj').textContent=hhmm(Date.now());
+  if(run&&!run.fin){ renderAhora(); renderLista(); }
+  else if(!run){ renderPreview(); renderLista(); }
+},1000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ cargar(); render(); } });
+</script>
+</body>
+</html>
